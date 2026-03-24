@@ -60,7 +60,7 @@
 
         /* ── HEADER ── */
         header {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.96); /* Mais opaco para não atrapalhar a leitura no scroll */
             backdrop-filter: blur(12px);
             border-bottom: 1.5px solid var(--blush);
             position: sticky;
@@ -119,7 +119,6 @@
             overflow: hidden;
             box-shadow: 0 16px 48px rgba(232, 122, 122, 0.15);
         }
-        /* Efeito de Esferas Borradas no fundo do Glassmorphism */
         .progress-card::before {
             content: ''; position: absolute; top: -50px; left: -50px;
             width: 250px; height: 250px; border-radius: 50%;
@@ -150,7 +149,7 @@
             border-radius: 4px; width: 0%; transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
         }
 
-        /* Mapa de Módulos (Substituindo o Calendário) */
+        /* Mapa de Módulos */
         .module-map {
             display: flex; justify-content: space-between; position: relative; z-index: 2;
         }
@@ -193,6 +192,7 @@
         .maintenance-text { flex-grow: 1; position: relative; z-index: 2; }
         .maintenance-text h4 { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
         .maintenance-text p { font-size: 0.95rem; color: rgba(255,255,255,0.9); margin-bottom: 20px; line-height: 1.5; font-weight: 500;}
+        
         .countdown { display: flex; gap: 12px; flex-wrap: wrap; }
         .cd-box {
             background: rgba(0,0,0,0.15); padding: 12px 20px; border-radius: var(--radius-sm);
@@ -206,6 +206,7 @@
             display: flex; align-items: center; gap: 16px; margin: 40px 0 0; padding: 20px 24px;
             background: var(--white); border: 1.5px solid var(--blush); border-radius: var(--radius-md);
             cursor: pointer; transition: all 0.25s ease; user-select: none;
+            position: relative;
         }
         .phase-header:hover { border-color: var(--coral); box-shadow: var(--shadow-soft); }
         .phase-header.open { border-color: var(--coral); border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
@@ -305,14 +306,71 @@
         footer { text-align: center; padding: 32px 0; border-top: 1.5px solid var(--blush); margin-top: 64px; }
         footer p { font-size: 0.85rem; color: var(--ink-muted); font-weight: 600; }
 
-        /* ── RESPONSIVO ── */
+        /* ── AJUSTES MOBILE EXCLUSIVOS ── */
         @media (max-width: 768px) {
-            .maintenance-banner { flex-direction: column; text-align: center; padding: 32px 24px; }
-            .countdown { justify-content: center; }
-            .module-map { overflow-x: auto; padding-bottom: 10px; gap: 10px; }
+            .container { padding: 0 16px; }
+            main { padding: 32px 0 80px; }
+            
+            .welcome-header h1 { font-size: 2rem; }
+            .welcome-header p { font-size: 1rem; }
+            
+            .progress-card { padding: 24px 20px; margin-bottom: 32px; }
+            .progress-top h3 { font-size: 1.5rem; }
+            .progress-percent { font-size: 2.8rem; }
+            .progress-subtitle { font-size: 0.8rem; }
+            
+            .module-map { overflow-x: auto; padding-bottom: 10px; gap: 8px; }
             .mod-step::after { display: none; }
-            .mod-circle { min-width: 38px; }
-            .welcome-header h1 { font-size: 2.2rem; }
+            .mod-circle { min-width: 34px; height: 34px; font-size: 0.8rem; border-width: 1.5px; }
+            .mod-label { font-size: 0.65rem; }
+            
+            /* Banner de Manutenção */
+            .maintenance-banner { flex-direction: column; text-align: center; padding: 24px 16px; gap: 16px; margin-bottom: 32px; }
+            .maintenance-icon { width: 56px; height: 56px; font-size: 1.6rem; }
+            .maintenance-text h4 { font-size: 1.3rem; }
+            .maintenance-text p { font-size: 0.9rem; margin-bottom: 16px; }
+            
+            /* Novo Grid do Contador Mobile (4 colunas) */
+            .countdown {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                width: 100%;
+            }
+            .cd-box {
+                min-width: auto;
+                padding: 10px 4px;
+            }
+            .cd-val { font-size: 1.4rem; }
+            .cd-lbl { font-size: 0.6rem; letter-spacing: 0.5px; }
+            
+            /* Cabeçalho do Acordeão (Evita colisão de textos) */
+            .phase-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px;
+                gap: 8px;
+            }
+            .phase-chevron {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                margin: 0;
+            }
+            .phase-name {
+                font-size: 1.15rem;
+                padding-right: 24px; /* Evita bater na setinha */
+                line-height: 1.3;
+            }
+            .phase-progress-mini {
+                margin-top: 4px;
+                font-size: 0.85rem;
+            }
+            
+            /* Cards gerais */
+            .day-card { padding: 24px 20px; }
+            .day-title { font-size: 1.1rem; }
+            .extra-card { padding: 24px 20px; }
         }
     </style>
 </head>
@@ -375,7 +433,7 @@
                 <div class="maintenance-icon"><i class="fas fa-magic"></i></div>
                 <div class="maintenance-text">
                     <h4>Portal em Atualização ✨</h4>
-                    <p>Nossos materiais estão sendo totalmente reformulados para entregar a você uma experiência ainda melhor e mais didática. Todo o conteúdo ficará disponível automaticamente no dia <strong>25 de março às 10:30</strong>. Suporte: suporte.atend1@outlook.com</p>
+                    <p>Nossos materiais estão sendo totalmente reformulados para entregar a você uma experiência ainda melhor e mais didática. Todo o conteúdo ficará disponível automaticamente no dia <strong>25 de março às 10:30</strong>.</p>
                     <div class="countdown" id="countdown-timer">
                         <div class="cd-box"><div class="cd-val" id="cd-days">00</div><div class="cd-lbl">Dias</div></div>
                         <div class="cd-box"><div class="cd-val" id="cd-hours">00</div><div class="cd-lbl">Horas</div></div>
